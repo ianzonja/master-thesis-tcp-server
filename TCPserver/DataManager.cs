@@ -28,12 +28,161 @@ namespace TCPserver
 
         public List<Room> GetAllRooms()
         {
-            return Singleton.Instance.GetRooms();
+            lock (_Lock)
+            {
+                return Singleton.Instance.GetRooms();
+            }
         }
 
         public void SetAllRooms(List<Room> rooms)
         {
-            Singleton.Instance.SetRooms(rooms);
+            lock (_Lock)
+            {
+                Singleton.Instance.SetRooms(rooms);
+            }
+        }
+
+        public void AddPlayerToRoom(Player player, string roomId)
+        {
+            lock (_Lock)
+            {
+                var rooms = Singleton.Instance.GetRooms();
+                int roomIndex = -1;
+                for (int i = 0; i < rooms.Count; i++)
+                {
+                    roomIndex = i;
+                }
+                if (roomIndex != -1)
+                {
+                    Player[] players = new Player[rooms.ElementAt(roomIndex).Players.Length + 1];
+                    for (int i = 0; i < rooms.ElementAt(roomIndex).Players.Length; i++)
+                    {
+                        players[i] = rooms.ElementAt(roomIndex).Players[i];
+                    }
+                    players[rooms.ElementAt(roomIndex).Players.Length] = player;
+                    rooms.ElementAt(roomIndex).Players = players;
+                    Singleton.Instance.SetRooms(rooms);
+                }
+            }
+        }
+
+        public void UpdatePlayerIngameStatus(string playfabId, string roomId, string status)
+        {
+            var players = Singleton.Instance.GetPlayers();
+            Player[] roomPlayers = null;
+            var player = players[playfabId];
+            player.InGameStatus = status;
+            players[playfabId] = player;
+            Room room = null;
+            var rooms = Singleton.Instance.GetRooms();
+            for(int i=0; i<rooms.Count; i++)
+            {
+                for(int j=0; j<rooms[i].Players.Length; j++)
+                {
+                    if(rooms[i].Players[j].PlayFabId == playfabId)
+                    {
+                        room = rooms[i];
+                        room.Players[j] = player;
+                        rooms[i] = room;
+                    }
+                }
+            }
+            this.SetAllRooms(rooms);
+            this.SetAllPlayers(players);
+        }
+
+        public string SetPlayersStatusIngame(string playfabId, string roomId)
+        {
+            var players = Singleton.Instance.GetPlayers();
+            Player[] roomPlayers = new Player[4];
+            Room room = null;
+            var rooms = Singleton.Instance.GetRooms();
+            var playersReady = true;
+            for (int i = 0; i < rooms.Count; i++)
+            {
+                if(rooms[i].HostPlayfabId == playfabId)
+                {
+                    for(int j=1; j <rooms[i].Players.Length; j++)
+                    {
+                        if (rooms[i].Players[j].InGameStatus != "READY")
+                            playersReady = false;
+                    }
+                    if (playersReady){
+                        for (int j = 0; j < rooms[i].Players.Length; j++)
+                        {
+                            var player = rooms[i].Players[j];
+                            player.InGameStatus = "INGAME";
+                            roomPlayers[j] = player;
+                            players[player.PlayFabId] = player;
+                        }
+                        rooms[i].Players = roomPlayers;
+                    }
+                }
+            }
+            if (playersReady)
+            {
+                this.SetAllPlayers(players);
+                this.SetAllRooms(rooms);
+                return "OK";
+            }
+            return "FORBIDDEN";
+        }
+        public Room GetOneRoom(string roomId)
+        {
+            lock (_Lock)
+            {
+                var rooms = Singleton.Instance.GetRooms();
+                Room room = null;
+                for (int i = 0; i < rooms.Count; i++)
+                {
+                    if (rooms.ElementAt(i).Id == roomId)
+                        room = rooms.ElementAt(i);
+                }
+                return room;
+            }
+        }
+
+        public Player GetOnePlayer(string playfabId)
+        {
+            lock (_Lock)
+            {
+                var players = Singleton.Instance.GetPlayers();
+                return players[playfabId];
+            }
+        }
+
+        internal string RemovePlayerFromRoom(string roomID, string playfabId, string kickedPlayerId)
+        {
+            var room = this.GetOneRoom(roomID);
+            var rooms = this.GetAllRooms();
+            var players = this.GetAllPlayers();
+            var player = players[kickedPlayerId];
+            if (playfabId == room.HostPlayfabId)
+            {
+                var roomPlayers = room.Players;
+                int index = -1;
+                for (int i = 0; i < roomPlayers.Length; i++)
+                {
+                    if (roomPlayers[i].PlayFabId == kickedPlayerId)
+                        index = i;
+                }
+                List<Player> tmpPlayers = new List<Player>(roomPlayers);
+                tmpPlayers.RemoveAt(index);
+                roomPlayers = tmpPlayers.ToArray();
+                room.Players = roomPlayers;
+                for (int i = 0; i < rooms.Count; i++)
+                {
+                    if (rooms[i].Id == room.Id)
+                        rooms[i] = room;
+                }
+                player.InGameStatus = "LOBBY";
+                players[player.PlayFabId] = player;
+                this.SetAllRooms(rooms);
+                this.SetAllPlayers(players);
+                return "OK";
+            }
+            else
+                return "FORBIDDEN";
         }
     }
 }

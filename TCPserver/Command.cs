@@ -11,5 +11,11 @@ namespace TCPserver
         public string CommandId { get; set; }
 
         public string SessionTicket { get; set; }
+
+        public string RoomID { get; set; }
+
+        public string PlayfabId { get; set; }
+
+        public string KickedPlayerId { get; set; }
     }
 }
