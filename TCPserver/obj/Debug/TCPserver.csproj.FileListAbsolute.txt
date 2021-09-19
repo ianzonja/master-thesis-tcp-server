@@ -19,3 +19,11 @@ C:\Users\Ian\TCPserver\TCPserver\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Ian\TCPserver\TCPserver\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Ian\TCPserver\TCPserver\obj\Debug\TCPserver.csproj.CopyComplete
 C:\Users\Ian\TCPserver\TCPserver\bin\Debug\PlayFabAllSDK.dll
+C:\Users\Ian\TCPserver\TCPserver\bin\Debug\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Ian\TCPserver\TCPserver\bin\Debug\Microsoft.IdentityModel.Logging.dll
+C:\Users\Ian\TCPserver\TCPserver\bin\Debug\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Ian\TCPserver\TCPserver\bin\Debug\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Ian\TCPserver\TCPserver\bin\Debug\Microsoft.IdentityModel.JsonWebTokens.xml
+C:\Users\Ian\TCPserver\TCPserver\bin\Debug\Microsoft.IdentityModel.Logging.xml
+C:\Users\Ian\TCPserver\TCPserver\bin\Debug\Microsoft.IdentityModel.Tokens.xml
+C:\Users\Ian\TCPserver\TCPserver\bin\Debug\System.IdentityModel.Tokens.Jwt.xml

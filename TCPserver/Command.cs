@@ -17,5 +17,9 @@ namespace TCPserver
         public string PlayfabId { get; set; }
 
         public string KickedPlayerId { get; set; }
+
+        public string Text { get; set; }
+
+        public string Jwt { get; set; }
     }
 }

@@ -6,7 +6,23 @@ using System.Threading.Tasks;
 
 namespace TCPserver
 {
-    class Player
+    public class JwtPlayer : Player
+    {
+        public string Jwt { get; set; }
+
+        public JwtPlayer SetPlayer(Player player)
+        {
+            this.Email = player.Email;
+            this.Username = player.Username;
+            this.Wins = player.Wins;
+            this.Loses = player.Loses;
+            this.Draws = player.Draws;
+            this.PlayFabId = player.PlayFabId;
+            this.Avatar = player.Avatar;
+            return this;
+        }
+    }
+    public class Player
     {
         public string Email { get; set; }
 
@@ -23,6 +39,5 @@ namespace TCPserver
         public string InGameStatus { get; set; }
 
         public string Avatar { get; set; }
-
     }
 }

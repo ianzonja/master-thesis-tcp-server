@@ -11,6 +11,7 @@ namespace TCPserver
         public Player[] Players { get; set; }
         public string Id { get; set; }
         public string HostPlayfabId { get; set; }
+        public Message[] Chat { get; set; }
 
     }
 }
