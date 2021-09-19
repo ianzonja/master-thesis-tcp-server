@@ -249,8 +249,8 @@ namespace TCPserver
                 }
                 if (jsonObject.CommandId == "YOIMREADY")
                 {
-                    ValidateClient client = new ValidateClient(jsonObject.SessionTicket);
-                    if (client.Response != null)
+                    var token = new TokenManager().DecryptToken(jsonObject.Jwt);
+                    if(token != null)
                     {
                         DataManager dm = new DataManager();
                         dm.UpdatePlayerIngameStatus(jsonObject.PlayfabId, jsonObject.RoomID, "READY");
@@ -260,8 +260,8 @@ namespace TCPserver
                 }
                 if (jsonObject.CommandId == "YOSTARTGAME")
                 {
-                    ValidateClient client = new ValidateClient(jsonObject.SessionTicket);
-                    if (client.Response != null)
+                    var token = new TokenManager().DecryptToken(jsonObject.Jwt);
+                    if (token != null)
                     {
                         DataManager dm = new DataManager();
                         var statusCode = dm.SetPlayersStatusIngame(jsonObject.PlayfabId, jsonObject.RoomID);
@@ -271,8 +271,8 @@ namespace TCPserver
                 }
                 if (jsonObject.CommandId == "YOIMKICKIN")
                 {
-                    ValidateClient client = new ValidateClient(jsonObject.SessionTicket);
-                    if (client.Response != null)
+                    var token = new TokenManager().DecryptToken(jsonObject.Jwt);
+                    if (token != null)
                     {
                         DataManager dm = new DataManager();
                         string statusCode = dm.RemovePlayerFromRoom(jsonObject.RoomID, jsonObject.PlayfabId, jsonObject.KickedPlayerId);
