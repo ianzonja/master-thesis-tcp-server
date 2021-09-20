@@ -39,5 +39,7 @@ namespace TCPserver
         public string InGameStatus { get; set; }
 
         public string Avatar { get; set; }
+
+        public Card[] Hand { get; set; }
     }
 }

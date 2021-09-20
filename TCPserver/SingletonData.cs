@@ -10,12 +10,33 @@ namespace TCPserver
     {
         Dictionary<string, Player> Players;
         List<Room> Rooms;
+        Dictionary<string, Game> Games;
         int NumberOfPlayers;
         private static readonly Singleton instance = new Singleton();
         static Singleton() {
         } // Make sure it's truly lazy
         private Singleton() {
         } // Prevent instantiation outside
+
+        internal Dictionary<string, Game> GetGames()
+        {
+            return this.Games;
+        }
+
+        internal void SetGames(Dictionary<string, Game> games)
+        {
+            this.Games = games;
+        }
+
+        internal Game GetOneGame(string gameId)
+        {
+            return this.Games[gameId];
+        }
+
+        internal void AddOneGameToGames(string id, Game game)
+        {
+            this.Games.Add(id, game);
+        }
 
         internal Dictionary<string, Player> GetPlayers()
         {

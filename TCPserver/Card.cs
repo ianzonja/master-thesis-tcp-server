@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace TCPserver
 {
-    class Card
+    public class Card
     {
-        public string Value { get; set; }
-
+        public string Name { get; set; }
         public string Type { get; set; }
-        public string Points { get; set; }
+        public string Value { get; set; }
+        public string BackgroundImage { get; set; }
+        public int Points { get; set; }
     }
 }

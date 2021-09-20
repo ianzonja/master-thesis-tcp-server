@@ -21,5 +21,11 @@ namespace TCPserver
         public string Text { get; set; }
 
         public string Jwt { get; set; }
+
+        public string GameId { get; set; }
+
+        public Card[] Cards { get; set; }
+
+        public string CardValue { get; set; }
     }
 }
